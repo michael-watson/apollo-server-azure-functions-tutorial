@@ -1,0 +1,13 @@
+{
+  "name": "apollo-server-azure-function-tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-datasource-rest": "^0.2.1",
+    "apollo-server": "^2.2.5",
+    "apollo-server-azure-functions": "^2.2.0-alpha.4",
+    "graphql": "^14.0.2"
+  }
+}

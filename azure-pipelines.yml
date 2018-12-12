@@ -10,18 +10,9 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 steps:
-  # Node install
-  - task: NodeTool@0
-    displayName: Node install
-    inputs:
-      versionSpec: '10.x' # The version we're installing
+  # - script: cd $(Build.Repository.LocalPath)
 
-  # Write the installed version to the command line
-  - script: which node
-  
-  - script: cd $(Build.Repository.LocalPath)
-
-  - script: npm install 
+  # - script: npm install 
 
   - task: PublishBuildArtifacts@1
     inputs:

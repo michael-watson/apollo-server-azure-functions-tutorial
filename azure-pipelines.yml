@@ -14,14 +14,16 @@ steps:
   - task: NodeTool@0
     displayName: Node install
     inputs:
-      versionSpec: '6.x' # The version we're installing
+      versionSpec: '10.x' # The version we're installing
 
   # Write the installed version to the command line
   - script: which node
+  
+  - script: cd $(Build.Repository.LocalPath)
 
-  - script: pwd
+  - script: npm install 
 
   - task: PublishBuildArtifacts@1
     inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      pathtoPublish: '$(Build.Repository.LocalPath)'
       artifactName: drop

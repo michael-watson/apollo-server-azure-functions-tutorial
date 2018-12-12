@@ -10,7 +10,11 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 steps:
-- task: PublishBuildArtifacts@1
-- script: |
-    npm install
-  displayName: 'Install packages'
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: |
+     **/*
+     !.git/**/*
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'

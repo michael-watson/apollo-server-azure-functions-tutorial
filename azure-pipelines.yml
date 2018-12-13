@@ -12,24 +12,27 @@ pool:
 steps:
   # - script: cd $(Build.Repository.LocalPath)
 
-  - script: npm install $(Build.Repository.LocalPath)
+  - script: npm install
 
   # These delete files tasks fail silently if the file doesn't exist
   - task: DeleteFiles@1
     inputs:
-      contents: '$(Build.Repository.LocalPath)/local.settings.json' 
+      contents: 'local.settings.json' 
   - task: DeleteFiles@1
     inputs: 
-      contents: '$(Build.Repository.LocalPath)/azure-pipelines.yml'
+      contents: 'azure-pipelines.yml'
   - task: DeleteFiles@1
     inputs: 
-      contents: '$(Build.Repository.LocalPath)/README.md'
+      contents: 'README.md'
   - task: DeleteFiles@1
     inputs: 
-      contents: '$(Build.Repository.LocalPath)/.gitignore'
+      contents: '.gitignore'
   - task: DeleteFiles@1
     inputs: 
-      contents: '$(Build.Repository.LocalPath)/.gitattributes'
+      contents: '.gitattributes'
+  - task: DeleteFiles@1
+    inputs: 
+      contents: '.git'
 
   - task: ArchiveFiles@2
     inputs:

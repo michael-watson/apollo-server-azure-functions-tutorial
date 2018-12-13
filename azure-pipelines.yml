@@ -14,9 +14,10 @@ steps:
 
   - script: npm install $(Build.Repository.LocalPath)
 
+  # These delete files tasks fail silently if the file doesn't exist
   - task: DeleteFiles@1
     inputs:
-      contents: '$(Build.Repository.LocalPath)/local1.settings.json' 
+      contents: '$(Build.Repository.LocalPath)/local.settings.json' 
 
   - task: ArchiveFiles@2
     inputs:

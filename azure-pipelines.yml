@@ -13,8 +13,15 @@ steps:
   # - script: cd $(Build.Repository.LocalPath)
 
   - script: npm install $(Build.Repository.LocalPath)
-
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.Repository.LocalPath)' 
+      includeRootFolder: false
+      archiveType: 'zip' # Options: zip, 7z, tar, wim
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
+      replaceExistingArchive: true 
+      
   - task: PublishBuildArtifacts@1
     inputs:
-      pathtoPublish: '$(Build.Repository.LocalPath)'
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
       artifactName: drop

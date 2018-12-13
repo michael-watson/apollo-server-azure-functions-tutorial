@@ -13,6 +13,11 @@ steps:
   # - script: cd $(Build.Repository.LocalPath)
 
   - script: npm install $(Build.Repository.LocalPath)
+
+  - task: DeleteFiles@1
+    inputs:
+      contents: '$(Build.Repository.LocalPath)/local1.settings.json' 
+
   - task: ArchiveFiles@2
     inputs:
       rootFolderOrFile: '$(Build.Repository.LocalPath)' 

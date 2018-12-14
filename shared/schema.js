@@ -46,6 +46,9 @@ const typeDefs = gql`
 
   type Measurement {
     measuredValue: String
+    """
+    Date and time the measurement was taken on the sensor
+    """
     dateMeasured: String
   }
 

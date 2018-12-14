@@ -5,13 +5,15 @@
 
 trigger:
 - master
+- staging
+pr:
+- master
+- staging
 
 pool:
   vmImage: 'Ubuntu-16.04'
 
 steps:
-  # - script: cd $(Build.Repository.LocalPath)
-
   - script: npm install
 
   # These delete files tasks fail silently if the file doesn't exist
@@ -36,16 +38,35 @@ steps:
   - task: DeleteFiles@1
     inputs: 
       contents: '.vscode'
-  
+
+  # Staging
   - task: ArchiveFiles@2
     inputs:
       rootFolderOrFile: '$(Build.Repository.LocalPath)' 
       includeRootFolder: false
       archiveType: 'zip' # Options: zip, 7z, tar, wim
-      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
+      archiveFile: '$(Build.ArtifactStagingDirectory)/staging-$(Build.BuildId).zip' 
       replaceExistingArchive: true 
-      
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/staging'))
+
   - task: PublishBuildArtifacts@1
     inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)/staging-$(Build.BuildId).zip'
       artifactName: drop
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/staging'))
+
+  # Production
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.Repository.LocalPath)' 
+      includeRootFolder: false
+      archiveType: 'zip' # Options: zip, 7z, tar, wim
+      archiveFile: '$(Build.ArtifactStagingDirectory)/prod-$(Build.BuildId).zip' 
+      replaceExistingArchive: true 
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)/prod-$(Build.BuildId).zip'
+      artifactName: drop
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))

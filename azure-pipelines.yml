@@ -5,13 +5,12 @@
 
 trigger:
 - master
+- staging
 
 pool:
   vmImage: 'Ubuntu-16.04'
 
 steps:
-  # - script: cd $(Build.Repository.LocalPath)
-
   - script: npm install
 
   # These delete files tasks fail silently if the file doesn't exist

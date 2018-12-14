@@ -1,16 +1,15 @@
-const { gql } = require('apollo-server');
+scalar DateTime
 
-const typeDefs = gql`
-  type Query {
+type Query {
     myStarredSites(email: String!): [Site]
     sites(stateCode: String siteType: String status:SiteStatus siteCode: String) : [Site]
-  }
+}
 
-  type Mutation {
+type Mutation {
     favoriteSite(email: String! siteCode: String! isFavorite: Boolean): Site
-  }
+}
 
-  type Site {
+type Site {
     """
     Name of site where the sensor is located
     """
@@ -27,9 +26,9 @@ const typeDefs = gql`
     """
     measuredData: MeasuredData
     isFavorite: Boolean
-  }
+}
 
-  type MeasuredData {
+type MeasuredData {
     """
     The unit you would typically see right after the reading
     """
@@ -42,9 +41,9 @@ const typeDefs = gql`
     These are the various sensor readings over the given timeframe
     """
     measurements: [Measurement]
-  }
+}
 
-  type Measurement {
+type Measurement {
     """
     Measurement reading from the sensor
     """
@@ -53,13 +52,10 @@ const typeDefs = gql`
     Date and time the measurement was taken on the sensor
     """
     dateMeasured: String
-  }
+}
 
-  enum SiteStatus {
+enum SiteStatus {
     ALL
     ACTIVE
     INACTIVE
-  }
-`;
-
-module.exports = typeDefs;
+}

@@ -5,10 +5,10 @@ const reduceWaterservicesModel = require('../utils/waterServiceModelReducer');
 module.exports = {
 	Query: {
         myStarredSites : async (root, { email }, { dataSources }) => {
-            const starredSites = await dataSources.starredSiteRestSource.getStarredSitesByEmail(email);
+            const userStarredSites = await dataSources.starredSiteRestSource.getStarredSitesByEmail(email);
             var starredSites = new Array();
 
-            await Promise.all(starredSites.map(site => dataSources.usgsRestSource.getSiteBySiteCode(site.siteCode))).then(allSiteDetails => {
+            await Promise.all(userStarredSites.map(site => dataSources.usgsRestSource.getSiteBySiteCode(site.siteCode))).then(allSiteDetails => {
                 allSiteDetails.map(siteDetails => {
                     var sensorsAtSite = siteDetails[0];
 

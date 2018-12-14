@@ -16,9 +16,10 @@ const typeDefs = gql`
     """
     name: String
     """
-    Unique code identifier for the sensor
+    Unique identifier for the site/sensor
     """
-    siteCode: String
+    id: ID!
+    siteCode: String @deprecated(reason: "Use 'id' instead")
     latitude: Float
     longitude: Float
     """

@@ -2,7 +2,7 @@ function reduceWaterservicesModel (element)
 {
     return {
         name: element.sourceInfo.siteName,
-        siteCode: element.name,
+        id: element.name,
         latitude: element.sourceInfo.geoLocation.geogLocation.latitude,
         longitude: element.sourceInfo.geoLocation.geogLocation.longitude,
         isFavorite: element.isFavorite,

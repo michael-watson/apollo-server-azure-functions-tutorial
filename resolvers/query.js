@@ -6,25 +6,22 @@ module.exports = {
 	Query: {
         myStarredSites : async (root, { email }, { dataSources }) => {
             const starredSites = await dataSources.starredSiteRestSource.getStarredSitesByEmail(email);
-            var sitesToReturn = new Array();
+            var starredSites = new Array();
 
-            for (let index = 0; index < starredSites.length; index++) {
-                var siteDetails = await dataSources.usgsRestSource.getSiteBySiteCode(starredSites[index].siteCode);
-                var sensorsAtSite = siteDetails.value.timeSeries.find(function(element){
-                    return element.name == starredSites[index].siteCode;
-                });
+            await Promise.all(starredSites.map(site => dataSources.usgsRestSource.getSiteBySiteCode(site.siteCode))).then(allSiteDetails => {
+                allSiteDetails.map(siteDetails => {
+                    var sensorsAtSite = siteDetails[0];
 
-                const siteToAdd = {
-                    "isFavorite":true,
-                    ...sensorsAtSite
-                };
+                    const siteToAdd = {
+                        "isFavorite":true,
+                        ...siteDetails[0]
+                    };
 
-                siteDetails.isFavorite = true;
+                    starredSites.push(siteToAdd);
+                })
+            });
 
-                sitesToReturn.push(siteToAdd);
-            }
-
-            return sitesToReturn.map(reduceWaterservicesModel);
+            return starredSites;
         },
 		sites: async (root, {stateCode, siteCode, siteType, status}, context) => {
             let results;

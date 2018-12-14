@@ -22,7 +22,8 @@ const server = new ApolloServer({
 	}),
 	engine: {
 		privateVariables: [ '' ],
-		privateHeaders: [ '' ]
+		privateHeaders: [ '' ],
+		schemaTag: process.env['ENGINE_SCHEMA_TAG']
 	}
 });
 

@@ -30,8 +30,17 @@ const typeDefs = gql`
   }
 
   type MeasuredData {
+    """
+    The unit you would typically see right after the reading
+    """
     unit: String
+    """
+    Describes the unit and what it means
+    """
     unitDescription: String
+    """
+    These are the various sensor readings over the given timeframe
+    """
     measurements: [Measurement]
   }
 

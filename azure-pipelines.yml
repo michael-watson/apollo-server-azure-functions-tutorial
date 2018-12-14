@@ -42,10 +42,10 @@ steps:
       rootFolderOrFile: '$(Build.Repository.LocalPath)' 
       includeRootFolder: false
       archiveType: 'zip' # Options: zip, 7z, tar, wim
-      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
+      archiveFile: '$(Build.ArtifactStagingDirectory)/staging/$(Build.BuildId).zip' 
       replaceExistingArchive: true 
       
   - task: PublishBuildArtifacts@1
     inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)/staging/$(Build.BuildId).zip'
       artifactName: drop

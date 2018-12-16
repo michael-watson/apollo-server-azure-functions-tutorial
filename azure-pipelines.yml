@@ -15,7 +15,7 @@ pool:
 
 steps:
   - script: npm i 
-  - script: sudp npm i -g apollo
+  - script: sudo npm i -g apollo
   - script: sudo npm i -g azure-functions-core-tools --unsafe-perm true
   - script: func start
   - script: apollo service:check --endpoint:"http://localhost:7071/api/graphql" --tag=staging --key=service:usgs-graphql-api:R84LYC5fMohpkfy_b7VIaw

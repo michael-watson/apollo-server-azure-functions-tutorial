@@ -18,7 +18,7 @@ steps:
   - script: npm i -g apollo
   - script: npm i -g azure-functions-core-tools --unsafe-perm true
   - script: func start
-  - script: apollo service:check --endpoint:"http://localhost:7071" --tag=staging --key=service:usgs-graphql-api:R84LYC5fMohpkfy_b7VIaw
+  - script: apollo service:check --endpoint:"http://localhost:7071/api/graphql" --tag=staging --key=service:usgs-graphql-api:R84LYC5fMohpkfy_b7VIaw
 
   # These delete files tasks fail silently if the file doesn't exist
   - task: DeleteFiles@1

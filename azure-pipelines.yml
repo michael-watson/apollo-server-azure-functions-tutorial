@@ -46,29 +46,37 @@ steps:
 # Run Schema Check
   - script: sudo npm i -g apollo
     displayName: 'Install Apollo CLI'
-  - script: apollo service:check --endpoint:"https://$(buildFunctionAppName).azurewebsites.net/api/graphql" --tag=staging --key=$(engineKey)
+  - script: apollo service:check --endpoint="https://$(buildFunctionAppName).azurewebsites.net/api/graphql" --tag=staging --key=$(engineKey)
     displayName: 'Use Azure CLI to check the locally running project'
 
 # These delete files tasks fail silently if the file doesn't exist
   - task: DeleteFiles@1
+    displayName: 'Delete local settings files'
     inputs:
-      contents: 'local.settings.json' 
+      contents: '*.settings.json' 
   - task: DeleteFiles@1
+    displayName: 'Delete pipeline definition files'
     inputs: 
       contents: 'azure-pipelines.yml'
   - task: DeleteFiles@1
+    displayName: 'Delete Markdown Files'
     inputs: 
-      contents: 'README.md'
+      contents: '*.md'
+    
   - task: DeleteFiles@1
+    displayName: 'Delete gitignore'
     inputs: 
       contents: '.gitignore'
   - task: DeleteFiles@1
+    displayName: 'Delete gitattributes'
     inputs: 
       contents: '.gitattributes'
   - task: DeleteFiles@1
+    displayName: 'Delete .git folder'
     inputs: 
       contents: '.git'
   - task: DeleteFiles@1
+    displayName: 'Delete vscode folder'
     inputs: 
       contents: '.vscode'
 

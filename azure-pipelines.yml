@@ -23,83 +23,78 @@ variables:
   engineKey: $(ENGINE_API_KEY)
 
 steps:
-  - script: echo "##vso[task.setvariable variable=myOutputVar;isOutput=true]this is the $(configuration) value"
-    name: setvarStep
-  - script: echo $(setvarStep.myOutputVar)
-    name: echovar
-
-# # Create new function app resources in Azure
-#   - script: sudo npm i -g azure-cli
-#     displayName: 'Install Azure CLI'
-#   - script: az login --service-principal --username $(appId) --password $(password) --tenant $(tenantId)
-#     displayName: 'Azure Service Principal Login'
-#   - script: az group create --name $(buildResourceGroup) --location westus
-#     displayName: 'Create resource group for build in Azure'
-#   - script: az storage account create --name $(buildStorageAccount) --location westus --resource-group $(buildResourceGroup) --sku Standard_LRS
-#     displayName: 'Create Storage Account for New Function App'
-#   - script: az functionapp create --resource-group $(buildResourceGroup) --consumption-plan-location westus --name $(buildFunctionAppName) --storage-account  $(buildStorageAccount) --runtime node 
-#     displayName: 'Create New Function App'
+# Create new function app resources in Azure
+  - script: sudo npm i -g azure-cli
+    displayName: 'Install Azure CLI'
+  - script: az login --service-principal --username $(appId) --password $(password) --tenant $(tenantId)
+    displayName: 'Azure Service Principal Login'
+  - script: az group create --name $(buildResourceGroup) --location westus
+    displayName: 'Create resource group for build in Azure'
+  - script: az storage account create --name $(buildStorageAccount) --location westus --resource-group $(buildResourceGroup) --sku Standard_LRS
+    displayName: 'Create Storage Account for New Function App'
+  - script: az functionapp create --resource-group $(buildResourceGroup) --consumption-plan-location westus --name $(buildFunctionAppName) --storage-account  $(buildStorageAccount) --runtime node 
+    displayName: 'Create New Function App'
   
-# # Steps to deploy project to newly created function app
-#   - script: npm i 
-#     displayName: 'Install packages for project'
-#   - script: sudo npm i -g azure-functions-core-tools --unsafe-perm true
-#     displayName: 'Install Azure Functions CLI'
-#   - script: func azure functionapp publish $(buildFunctionAppName) --overwrite-settings -y
-#     displayName: 'Publish to new function'
+# Steps to deploy project to newly created function app
+  - script: npm i 
+    displayName: 'Install packages for project'
+  - script: sudo npm i -g azure-functions-core-tools --unsafe-perm true
+    displayName: 'Install Azure Functions CLI'
+  - script: func azure functionapp publish $(buildFunctionAppName) --overwrite-settings -y 
+    displayName: 'Publish to new function'
 
-# # Run Schema Check
-#   - script: sudo npm i -g apollo
-#     displayName: 'Install Apollo CLI'
-#   - script: apollo service:check --endpoint="https://$(buildFunctionAppName).azurewebsites.net/api/graphql" --tag=staging --key=$(engineKey) "##vso[task.setvariable variable=myVariable]"
-#     displayName: 'Schame Validation'
+# Run Schema Check
+  - script: sudo npm i -g apollo
+    displayName: 'Install Apollo CLI'
+  - script: apollo service:check --endpoint="https://$(buildFunctionAppName).azurewebsites.net/api/graphql" --tag=staging --key=$(engineKey) "##vso[task.setvariable variable=myVariable]"
+    displayName: 'Schame Validation'
 
-# # These delete files tasks fail silently if the file doesn't exist
-#   - task: DeleteFiles@1
-#     displayName: 'Delete local settings files'
-#     inputs:
-#       contents: '*.settings.json' 
-#   - task: DeleteFiles@1
-#     displayName: 'Delete pipeline definition files'
-#     inputs: 
-#       contents: 'azure-pipelines.yml'
-#   - task: DeleteFiles@1
-#     displayName: 'Delete Markdown Files'
-#     inputs: 
-#       contents: '*.md'
+# These delete files tasks fail silently if the file doesn't exist
+  - task: DeleteFiles@1
+    displayName: 'Delete local settings files'
+    inputs:
+      contents: '*.settings.json' 
+  - task: DeleteFiles@1
+    displayName: 'Delete pipeline definition files'
+    inputs: 
+      contents: 'azure-pipelines.yml'
+  - task: DeleteFiles@1
+    displayName: 'Delete Markdown Files'
+    inputs: 
+      contents: '*.md'
     
-#   - task: DeleteFiles@1
-#     displayName: 'Delete .gitignore'
-#     inputs: 
-#       contents: '.gitignore'
-#   - task: DeleteFiles@1
-#     displayName: 'Delete .gitattributes'
-#     inputs: 
-#       contents: '.gitattributes'
-#   - task: DeleteFiles@1
-#     displayName: 'Delete .git folder'
-#     inputs: 
-#       contents: '.git'
-#   - task: DeleteFiles@1
-#     displayName: 'Delete vscode folder'
-#     inputs: 
-#       contents: '.vscode'
+  - task: DeleteFiles@1
+    displayName: 'Delete .gitignore'
+    inputs: 
+      contents: '.gitignore'
+  - task: DeleteFiles@1
+    displayName: 'Delete .gitattributes'
+    inputs: 
+      contents: '.gitattributes'
+  - task: DeleteFiles@1
+    displayName: 'Delete .git folder'
+    inputs: 
+      contents: '.git'
+  - task: DeleteFiles@1
+    displayName: 'Delete vscode folder'
+    inputs: 
+      contents: '.vscode'
 
-#   # Staging
-#   - task: ArchiveFiles@2
-#     inputs:
-#       rootFolderOrFile: '$(Build.Repository.LocalPath)' 
-#       includeRootFolder: false
-#       archiveType: 'zip' 
-#       archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
-#       replaceExistingArchive: true 
+  # Staging
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.Repository.LocalPath)' 
+      includeRootFolder: false
+      archiveType: 'zip' 
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
+      replaceExistingArchive: true 
 
-#   - task: PublishBuildArtifacts@1
-#     inputs:
-#       pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-#       artifactName: drop
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      artifactName: drop
 
-# # Clean up Azure Resources
-#   - script: az group delete -n $(buildResourceGroup) --yes
-#     condition: always()
-#     displayName: 'Delete  Azure resource group'
+# Clean up Azure Resources
+  - script: az group delete -n $(buildResourceGroup) --yes
+    condition: always()
+    displayName: 'Delete  Azure resource group'

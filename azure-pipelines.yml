@@ -14,9 +14,10 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 variables:
-  buildResourceGroup: $(Build.BuildId)-staging-schema-validation
-  buildStorageAccount: $(buildResourceGroup)-storage
-  buildFunctionAppName: $(Build.BuildId)-staging-sv-app
+  buildId: $(Build.BuildId)-(Build.SourceBranchName)
+  buildResourceGroup: $(buildId)-staging-schema-validation
+  buildStorageAccount: $(buildId)-storage
+  buildFunctionAppName: $(buildId)-sv-app
   appId: $(servicePrincipal.appId)
   password: $(servicePrincipal.password)
   tenantId: $(servicePrincipal.tenantId)

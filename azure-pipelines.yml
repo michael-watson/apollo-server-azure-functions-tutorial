@@ -14,10 +14,9 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 variables:
-  buildId: $(Build.BuildId)-$(Build.TriggeredBy.DefinitionName)
-  buildResourceGroup: $(buildId)-staging-schema-validation
-  buildStorageAccount: $(buildId)storage
-  buildFunctionAppName: $(buildId)-sv-app
+  buildResourceGroup: $(Build.BuildId)-testing-rg
+  buildStorageAccount: $(Build.BuildId)storage
+  buildFunctionAppName: $(Build.BuildId)-sv-app
   appId: $(servicePrincipal.appId)
   password: $(servicePrincipal.password)
   tenantId: $(servicePrincipal.tenantId)
@@ -87,6 +86,7 @@ steps:
       artifactName: drop
 
 # Clean up Azure Resources
-  - script: az group delete -n $(buildResourceGroup)
+  - task: NodeTool@0
     displayName: 'Delete  Azure resource group'
     continueOnError: true
+    - script: az group delete -n $(buildResourceGroup)

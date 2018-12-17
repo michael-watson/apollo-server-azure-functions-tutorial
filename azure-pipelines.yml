@@ -35,6 +35,11 @@ steps:
     displayName: 'Install packages for project'
   - script: sudo npm i -g azure-functions-core-tools --unsafe-perm true
     displayName: 'Install Azure Functions CLI'
+  - script: pwd
+  - script: ls
+  - script: $(Build.Repository.LocalPath)
+  - script: pwd
+  - script: ls
   - script: func azure functionapp publish $(buildFunctionAppName) --zip
     displayName: 'Publish to new function'
 

@@ -84,5 +84,5 @@ steps:
 
 # Clean up Azure Resources:
     - script: az group delete -n $(buildResourceGroup)
-    - displayName: 'Delete  Azure resource group'
-    - continueOnError: true
+      displayName: 'Delete  Azure resource group'
+      continueOnError: true

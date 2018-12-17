@@ -25,7 +25,7 @@ steps:
 # Create new function app resources in Azure
   - script: sudo npm i -g azure-cli
     displayName: 'Install Azure CLI'
-  - script: read -sp "Azure password:" password && echo && az login --service-principal --username $(appId) --password $(password) --tenant $(tenantId)
+  - script: az login --service-principal --username $(appId) --password $(password) --tenant $(tenantId)
     displayName: 'Azure Service Principal Login'
   - script: az group create --name $(buildResourceGroup) --location westus
     displayName: 'Create resource group for build in Azure'
@@ -89,4 +89,3 @@ steps:
   - script: az group delete -n $(buildResourceGroup)
     displayName: 'Delete  Azure resource group'
     continueOnError: true
-    

@@ -17,6 +17,9 @@ variables:
   buildResourceGroup: $(Build.BuildId)-staging-schema-validation
   buildStorageAccount: $(buildResourceGroup)-storage
   buildFunctionAppName: $(Build.BuildId)-staging-sv-app
+  servicePrincipal.appId: $(servicePrincipal.appId)
+  servicePrincipal.password: $(servicePrincipal.password)
+  servicePrincipal.tenantId: $(servicePrincipal.tenantId)
 
 steps:
 # Crreate new function app resources in Azure

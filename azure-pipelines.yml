@@ -17,15 +17,15 @@ variables:
   buildResourceGroup: $(Build.BuildId)-staging-schema-validation
   buildStorageAccount: $(buildResourceGroup)-storage
   buildFunctionAppName: $(Build.BuildId)-staging-sv-app
-  servicePrincipal.appId: $(servicePrincipal.appId)
-  servicePrincipal.password: $(servicePrincipal.password)
-  servicePrincipal.tenantId: $(servicePrincipal.tenantId)
+  appId: $(servicePrincipal.appId)
+  password: $(servicePrincipal.password)
+  tenantId: $(servicePrincipal.tenantId)
 
 steps:
-# Crreate new function app resources in Azure
+# Create new function app resources in Azure
   - script: sudo npm i -g azure-cli
     displayName: 'Install Azure CLI'
-  - script: read -sp "Azure password:" servicePrincipal.password && echo && az login --service-principal --username $(servicePrincipal.appId) --password $(servicePrincipal.password) --tenant $(servicePrincipal.tenantId)
+  - script: read -sp "Azure password:" servicePrincipal.password && echo && az login --service-principal --username $(appId) --password $(password) --tenant $(tenantId)
     displayName: 'Azure Service Principal Login'
   - script: az group create --name $(buildResourceGroup) --location westus
     displayName: 'Create resource group for build in Azure'

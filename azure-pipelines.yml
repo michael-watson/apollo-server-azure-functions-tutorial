@@ -46,8 +46,11 @@ steps:
 # Run Schema Check
   - script: sudo npm i -g apollo
     displayName: 'Install Apollo CLI'
-  - script: apollo service:check --endpoint="https://$(buildFunctionAppName).azurewebsites.net/api/graphql" --tag=staging --key=$(engineKey) "##vso[task.setvariable variable=myVariable]"
+  - script: apollo service:check --endpoint="https://$(buildFunctionAppName).azurewebsites.net/api/graphql" --tag=staging --key=$(engineKey)
     displayName: 'Schame Validation'
+
+# Need to figure out how to store the output of Apollo CLI as a variable to check
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=vsts&tabs=yaml%2Cbatch#set-a-job-scoped-variable-from-a-script1
 
 # These delete files tasks fail silently if the file doesn't exist
   - task: DeleteFiles@1

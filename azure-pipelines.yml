@@ -13,12 +13,34 @@ pr:
 pool:
   vmImage: 'Ubuntu-16.04'
 
+variables:
+  buildResourceGroup: $(Build.BuildId)-staging-schema-validation
+  buildStorageAccount: $(buildResourceGroup)-storage
+  buildFunctionAppName: $(Build.BuildId)-staging-schema-validation-app
+
 steps:
   - script: npm i 
+    displayName: 'Install packages for project'
+
+# Install CLI tooling needed to run schema validation
+  - script: sudo npm i -g azure-cli
+    displayName: 'Install Azure CLI'
   - script: sudo npm i -g apollo
+    displayName: 'Install Apollo CLI'
   - script: sudo npm i -g azure-functions-core-tools --unsafe-perm true
-  - script: func start
+    displayName: 'Install Azure Functions CLI'
+# Build New Azure Function resources to test
+  - script: az group create --name $(buildResourceGroup) --location westus
+    displayName: 'Create resource group for build in Azure'
+  - script: az storage account create --name $(buildStorageAccount) --location westus --resource-group $(buildResourceGroup) --sku Standard_LRS
+    displayName: 'Create Storage Account for New Function App'
+  - script: az functionapp create --resource-group $(buildResourceGroup) --consumption-plan-location westus --name $(buildFunctionAppName) --storage-account  $(buildStorageAccount) --runtime node 
+    displayName: 'Create New Function App'
+  - script: output=$(func azure functionapp publish) && echo "##vso[task.setvariable variable=newFunctionOutput]$output"
+    displayName: 'Publish to new function'
+  # Run Schema Check
   - script: apollo service:check --endpoint:"http://localhost:7071/api/graphql" --tag=staging --key=service:usgs-graphql-api:R84LYC5fMohpkfy_b7VIaw
+    displayName: 'Use Azure CLI to check the locally running project'
 
   # These delete files tasks fail silently if the file doesn't exist
   - task: DeleteFiles@1

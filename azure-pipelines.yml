@@ -40,7 +40,7 @@ steps:
   - script: $(Build.Repository.LocalPath)
   - script: pwd
   - script: ls
-  - script: func azure functionapp publish $(buildFunctionAppName) --zip
+  - script: func azure functionapp publish $(buildFunctionAppName)
     displayName: 'Publish to new function'
 
 # Run Schema Check

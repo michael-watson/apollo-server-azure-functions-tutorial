@@ -82,7 +82,7 @@ steps:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
       artifactName: drop
 
-# Clean up Azure Resources:
-    - script: az group delete -n $(buildResourceGroup)
-      displayName: 'Delete  Azure resource group'
-      continueOnError: true
+# Clean up Azure Resources
+  - script: az group delete -n $(buildResourceGroup)
+    displayName: 'Delete  Azure resource group'
+    continueOnError: true

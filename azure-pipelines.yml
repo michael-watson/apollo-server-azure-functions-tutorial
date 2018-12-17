@@ -86,6 +86,6 @@ steps:
       artifactName: drop
 
 # Clean up Azure Resources
-    - script: az group delete -n $(buildResourceGroup)
-      condition: always()
-      displayName: 'Delete  Azure resource group'
+  - script: az group delete -n $(buildResourceGroup)
+    condition: always()
+    displayName: 'Delete  Azure resource group'

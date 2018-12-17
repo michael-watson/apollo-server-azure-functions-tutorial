@@ -30,6 +30,8 @@ steps:
   - script: sudo npm i -g azure-functions-core-tools --unsafe-perm true
     displayName: 'Install Azure Functions CLI'
 # Build New Azure Function resources to test
+  - script: az login --service-principal --username $(servicePrincipal.appId) --password $(servicePrincipal.password) --tenant $(servicePrincipal.tenantId)
+    displayName: 'Azure Service Principal Login'
   - script: az group create --name $(buildResourceGroup) --location westus
     displayName: 'Create resource group for build in Azure'
   - script: az storage account create --name $(buildStorageAccount) --location westus --resource-group $(buildResourceGroup) --sku Standard_LRS

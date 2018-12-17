@@ -16,7 +16,7 @@ pool:
 variables:
   buildId: $(Build.BuildId)-(Build.SourceBranchName)
   buildResourceGroup: $(buildId)-staging-schema-validation
-  buildStorageAccount: $(buildId)-storage
+  buildStorageAccount: $(buildId)-storage1
   buildFunctionAppName: $(buildId)-sv-app
   appId: $(servicePrincipal.appId)
   password: $(servicePrincipal.password)

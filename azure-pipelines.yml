@@ -23,10 +23,10 @@ variables:
   engineKey: $(ENGINE_API_KEY)
 
 steps:
-- script: echo "##vso[task.setvariable variable=myOutputVar;isOutput=true]this is the $(configuration) value"
+  - script: echo "##vso[task.setvariable variable=myOutputVar;isOutput=true]this is the $(configuration) value"
     name: setvarStep
-- script: echo $(setvarStep.myOutputVar)
-  name: echovar
+  - script: echo $(setvarStep.myOutputVar)
+    name: echovar
 
 # # Create new function app resources in Azure
 #   - script: sudo npm i -g azure-cli

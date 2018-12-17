@@ -35,7 +35,7 @@ steps:
     displayName: 'Install packages for project'
   - script: sudo npm i -g azure-functions-core-tools --unsafe-perm true
     displayName: 'Install Azure Functions CLI'
-  - script: func azure functionapp publish $(buildFunctionAppName) --overwrite-settings -y 
+  - script: func azure functionapp publish $(buildFunctionAppName) --zip
     displayName: 'Publish to new function'
 
 # Run Schema Check

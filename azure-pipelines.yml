@@ -40,7 +40,7 @@ steps:
     displayName: 'Install packages for project'
   - script: sudo npm i -g azure-functions-core-tools --unsafe-perm true
     displayName: 'Install Azure Functions CLI'
-  - script: func azure functionapp publish $(buildFunctionAppName)
+  - script: func azure functionapp publish $(buildFunctionAppName) --overwrite-settings -y
     displayName: 'Publish to new function'
 
 # Run Schema Check
@@ -64,11 +64,11 @@ steps:
       contents: '*.md'
     
   - task: DeleteFiles@1
-    displayName: 'Delete gitignore'
+    displayName: 'Delete .gitignore'
     inputs: 
       contents: '.gitignore'
   - task: DeleteFiles@1
-    displayName: 'Delete gitattributes'
+    displayName: 'Delete .gitattributes'
     inputs: 
       contents: '.gitattributes'
   - task: DeleteFiles@1

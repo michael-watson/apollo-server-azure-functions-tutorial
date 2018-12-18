@@ -39,7 +39,7 @@ steps:
     displayName: 'Delete files that shouldn't be published'
 # Archive and publish function to testing environment
   - task: ArchiveFiles@2
-    displayName: Zip up files as build artifact
+    displayName: 'Zip up files as build artifact'
     inputs:
       rootFolderOrFile: '$(Build.Repository.LocalPath)' 
       includeRootFolder: false

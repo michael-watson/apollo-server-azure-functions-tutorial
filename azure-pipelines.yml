@@ -31,6 +31,7 @@ steps:
     displayName: 'Create New Function App'
   
 # Steps to deploy project to newly created function app
+  - script: pwd && ls && cd $(Build.Repository.LocalPath) && pwd && ls
   - script: npm i 
     displayName: 'Install packages for project'
   - script: sudo npm i -g azure-functions-core-tools --unsafe-perm true

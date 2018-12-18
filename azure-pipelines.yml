@@ -36,7 +36,7 @@ steps:
   - script: npm i 
     displayName: 'Install packages for project'
   - script: rm -f local.settings.json azure-pipelines.yml README.md .gitignore .gitattributes && rmdir .git && rmdir .vscode
-    displayName: 'Clean up local cloned repos (.md, .gitignore etc.)
+    displayName: 'Clean up local cloned repos (.md, .gitignore etc.)'
 # Archive and publish function to testing environment
   - task: ArchiveFiles@2
     inputs:

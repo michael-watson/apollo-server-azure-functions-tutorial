@@ -36,8 +36,8 @@ steps:
   - script: npm i 
     displayName: 'Install packages for archive'
   - script: rm -f local.settings.json azure-pipelines.yml README.md .gitignore .gitattributes && rmdir --ignore-fail-on-non-empty .git && rmdir --ignore-fail-on-non-empty .vscode
-    # displayName: 'Delete files that shouldn't be published'
-    
+    displayName: 'Delete files that should not be published'
+
 # Archive and publish function to testing environment
   - task: ArchiveFiles@2
     inputs:

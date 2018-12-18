@@ -14,5 +14,5 @@
           }
       }
   },
-  "watchDirectories": [ "resolvers", "datasources", "shared", "utils" ]
+  "watchDirectories": [ "resolvers", "datasources", "shared", "utils", "graphql" ]
 }

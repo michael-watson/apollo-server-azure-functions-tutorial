@@ -1,9 +1,12 @@
-const typeDefs = require('../shared/schema');
 const resolvers = require('../resolvers');
 const UsgsRestSource = require('../datasources/UsgsRestSource');
 const StarredSiteRestSource = require('../datasources/StarredSiteRestSource');
 
 const { ApolloServer } = require('apollo-server-azure-functions');
+
+const fs = require('fs');
+const path =require('path');
+const typeDefs = [fs.readFileSync(path.join(__dirname, "../shared/schema.graphql"), "utf8")];
 
 const mocks = {
 	Int: () => 6,

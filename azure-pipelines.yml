@@ -35,7 +35,7 @@ steps:
 # Build function to be archived
   - script: npm i 
     displayName: 'Install packages for project'
-  - script: rm -f local.settings.json azure-pipelines.yml README.md .gitignore .gitattributes && rmdir .git && rmdir .vscode
+  - script: rm -f local.settings.json azure-pipelines.yml README.md .gitignore .gitattributes && rmdir --ignore-fail-on-non-empty .git && rmdir --ignore-fail-on-non-empty .vscode
     displayName: 'Clean up local cloned repos (.md, .gitignore etc.)'
 # Archive and publish function to testing environment
   - task: ArchiveFiles@2

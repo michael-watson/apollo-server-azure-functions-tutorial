@@ -27,17 +27,17 @@ steps:
     displayName: 'Create resource group for build in Azure'
   - script: az storage account create --name $(buildStorageAccount) --location westus --resource-group $(buildResourceGroup) --sku Standard_LRS
     displayName: 'Create Storage Account for New Function App'
-  - script: az functionapp create --resource-group $(buildResourceGroup) --consumption-plan-location westus --name $(buildFunctionAppName) --storage-account  $(buildStorageAccount) --runtime node --deployment-source-url "https://github.com/michael-watson/apollo-server-azure-functions-tutorial" --deployment-source-branch $(Build.SourceBranch)
+  - script: az functionapp create --resource-group $(buildResourceGroup) --consumption-plan-location westus --name $(buildFunctionAppName) --storage-account  $(buildStorageAccount) --runtime node # --deployment-source-url "https://github.com/michael-watson/apollo-server-azure-functions-tutorial" --deployment-source-branch $(Build.SourceBranch)
     displayName: 'Create New Function App'
   
 # Steps to deploy project to newly created function app
-  - script: pwd && ls && cd $(Build.Repository.LocalPath) && pwd && ls
   - script: npm i 
     displayName: 'Install packages for project'
-  - script: sudo npm i -g azure-functions-core-tools --unsafe-perm true
+  # - script: sudo npm i -g azure-functions-core-tools --unsafe-perm true
   #   displayName: 'Install Azure Functions CLI'
-  # - script: func azure functionapp publish $(buildFunctionAppName)
-  #   displayName: 'Publish to new function'
+  
+
+# az functionapp deployment source config-zip  -g myResourceGroup -n <app_name> --src <zip_file_path>
 
 # Run Schema Check
   - script: sudo npm i -g apollo
@@ -88,6 +88,9 @@ steps:
       archiveType: 'zip' 
       archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
       replaceExistingArchive: true 
+
+  - script: az functionapp deployment source config-zip  -g $(buildResourceGroup) -n $(buildFunctionAppName) --src $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+    displayName: 'Publish to new function'
 
   - task: PublishBuildArtifacts@1
     inputs:

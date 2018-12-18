@@ -29,17 +29,17 @@ steps:
   - script: az group create --name $(buildResourceGroup) --location westus
     displayName: 'Create resource group for testing function'
   - script: az storage account create --name $(buildStorageAccount) --location westus --resource-group $(buildResourceGroup) --sku Standard_LRS
-    displayName: 'Create Storage Account for testing function'
+    displayName: 'Create storage account for testing function'
   - script: az functionapp create --resource-group $(buildResourceGroup) --consumption-plan-location westus --name $(buildFunctionAppName) --storage-account  $(buildStorageAccount) --runtime node # --deployment-source-url "https://github.com/michael-watson/apollo-server-azure-functions-tutorial" --deployment-source-branch $(Build.SourceBranch)
-    displayName: 'Create testing function app'
+    displayName: 'Create testing function'
 # Build function to be archived
   - script: npm i 
     displayName: 'Install packages for archive'
   - script: rm -f local.settings.json azure-pipelines.yml README.md .gitignore .gitattributes && rmdir --ignore-fail-on-non-empty .git && rmdir --ignore-fail-on-non-empty .vscode
     displayName: 'Delete files that should not be published'
-
 # Archive and publish function to testing environment
   - task: ArchiveFiles@2
+    displayName: 'Zip up files as build artifact'
     inputs:
       rootFolderOrFile: '$(Build.Repository.LocalPath)' 
       includeRootFolder: false
@@ -47,10 +47,10 @@ steps:
       archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
       replaceExistingArchive: true 
   - script: az functionapp deployment source config-zip  -g $(buildResourceGroup) -n $(buildFunctionAppName) --src $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-    displayName: 'Publish to new function'
+    displayName: 'Publish to testing function'
 # Run Schema Check
   - script: apollo service:check --endpoint="https://$(buildFunctionAppName).azurewebsites.net/api/graphql" --tag=staging --key=$(engineKey)
-    displayName: 'Apollo Schema Validation Check'
+    displayName: 'Apollo Schema Validation Check on testing function'
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact'
     inputs:

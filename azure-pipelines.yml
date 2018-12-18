@@ -48,7 +48,7 @@ steps:
       replaceExistingArchive: true 
   - script: az functionapp deployment source config-zip  -g $(buildResourceGroup) -n $(buildFunctionAppName) --src $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
     displayName: 'Publish to testing function'
-# Run Schema Check
+# Run Apollo Schema Check
   - script: apollo service:check --endpoint="https://$(buildFunctionAppName).azurewebsites.net/api/graphql" --key=$(engineKey)
     displayName: 'Apollo Schema Validation Check on testing function'
   - task: PublishBuildArtifacts@1

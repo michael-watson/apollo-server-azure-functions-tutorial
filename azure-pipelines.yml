@@ -27,7 +27,7 @@ steps:
     displayName: 'Create resource group for build in Azure'
   - script: az storage account create --name $(buildStorageAccount) --location westus --resource-group $(buildResourceGroup) --sku Standard_LRS
     displayName: 'Create Storage Account for New Function App'
-  - script: az functionapp create --resource-group $(buildResourceGroup) --consumption-plan-location westus --name $(buildFunctionAppName) --storage-account  $(buildStorageAccount) --runtime node
+  - script: az functionapp create --resource-group $(buildResourceGroup) --consumption-plan-location westus --name $(buildFunctionAppName) --storage-account  $(buildStorageAccount) --runtime node --deployment-source-url "https://github.com/michael-watson/apollo-server-azure-functions-tutorial" --deployment-source-branch $(Build.SourceBranch)
     displayName: 'Create New Function App'
   
 # Steps to deploy project to newly created function app
@@ -35,9 +35,9 @@ steps:
   - script: npm i 
     displayName: 'Install packages for project'
   - script: sudo npm i -g azure-functions-core-tools --unsafe-perm true
-    displayName: 'Install Azure Functions CLI'
-  - script: func azure functionapp publish $(buildFunctionAppName)
-    displayName: 'Publish to new function'
+  #   displayName: 'Install Azure Functions CLI'
+  # - script: func azure functionapp publish $(buildFunctionAppName)
+  #   displayName: 'Publish to new function'
 
 # Run Schema Check
   - script: sudo npm i -g apollo

@@ -19,8 +19,6 @@ variables:
 
 steps:
 # Create new function app resources in Azure
-  - script: sudo npm i -g azure-functions-core-tools
-    displayName: 'Install Azure Functions CLI'
   - script: sudo npm i -g azure-cli
     displayName: 'Install Azure CLI'
   - script: az login --service-principal --username $(appId) --password $(password) --tenant $(tenantId)
@@ -35,7 +33,8 @@ steps:
 # Steps to deploy project to newly created function app
   - script: npm i 
     displayName: 'Install packages for project'
-  
+  - script: sudo npm i -g azure-functions-core-tools --unsafe-perm true
+    displayName: 'Install Azure Functions CLI'
   - script: func azure functionapp publish $(buildFunctionAppName)
     displayName: 'Publish to new function'
 

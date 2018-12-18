@@ -11,7 +11,7 @@ pool:
 variables:
   buildResourceGroup: $(Build.BuildId)-testing-rg
   buildStorageAccount: $(Build.BuildId)storage
-  buildFunctionAppName: $(Build.BuildId).sv.app
+  buildFunctionAppName: '$(Build.BuildId) sv app'
   appId: $(servicePrincipal.appId)
   password: $(servicePrincipal.password)
   tenantId: $(servicePrincipal.tenantId)

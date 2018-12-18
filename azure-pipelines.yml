@@ -39,11 +39,7 @@ steps:
 
 # az functionapp deployment source config-zip  -g myResourceGroup -n <app_name> --src <zip_file_path>
 
-# Run Schema Check
-  - script: sudo npm i -g apollo
-    displayName: 'Install Apollo CLI'
-  - script: apollo service:check --endpoint="https://$(buildFunctionAppName).azurewebsites.net/api/graphql" --tag=staging --key=$(engineKey)
-    displayName: 'Schame Validation'
+
 
 # Azure Functions is also deploying strangely and there is some setting that isn't being applied making it have an access code. It should be anonymous, but should just grab the code now.
 # Need to figure out how to store the output of Apollo CLI as a variable to check
@@ -92,6 +88,13 @@ steps:
   - script: az functionapp deployment source config-zip  -g $(buildResourceGroup) -n $(buildFunctionAppName) --src $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
     displayName: 'Publish to new function'
 
+# Run Schema Check
+  - script: sudo npm i -g apollo
+    displayName: 'Install Apollo CLI'
+  - script: apollo service:check --endpoint="https://$(buildFunctionAppName).azurewebsites.net/api/graphql" --tag=staging --key=$(engineKey)
+    displayName: 'Schame Validation'
+
+    
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'

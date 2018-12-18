@@ -23,22 +23,23 @@ steps:
     displayName: 'Install Apollo CLI'
   - script: sudo npm i -g azure-cli
     displayName: 'Install Azure CLI'
-# Create new function resources in Azure
+# Create testing function resources in Azure
   - script: az login --service-principal --username $(appId) --password $(password) --tenant $(tenantId)
     displayName: 'Azure Service Principal Login'
   - script: az group create --name $(buildResourceGroup) --location westus
-    displayName: 'Create resource group for build in Azure'
+    displayName: 'Create resource group for testing function'
   - script: az storage account create --name $(buildStorageAccount) --location westus --resource-group $(buildResourceGroup) --sku Standard_LRS
-    displayName: 'Create Storage Account for New Function App'
+    displayName: 'Create Storage Account for testing function'
   - script: az functionapp create --resource-group $(buildResourceGroup) --consumption-plan-location westus --name $(buildFunctionAppName) --storage-account  $(buildStorageAccount) --runtime node # --deployment-source-url "https://github.com/michael-watson/apollo-server-azure-functions-tutorial" --deployment-source-branch $(Build.SourceBranch)
-    displayName: 'Create New Function App'
+    displayName: 'Create testing function app'
 # Build function to be archived
   - script: npm i 
-    displayName: 'Install packages for project'
+    displayName: 'Install packages for archive'
   - script: rm -f local.settings.json azure-pipelines.yml README.md .gitignore .gitattributes && rmdir --ignore-fail-on-non-empty .git && rmdir --ignore-fail-on-non-empty .vscode
-    displayName: 'Clean up local cloned repos (.md, .gitignore etc.)'
+    displayName: 'Delete files that shouldn't be published'
 # Archive and publish function to testing environment
   - task: ArchiveFiles@2
+    displayName: Zip up files as build artifact
     inputs:
       rootFolderOrFile: '$(Build.Repository.LocalPath)' 
       includeRootFolder: false
@@ -49,7 +50,7 @@ steps:
     displayName: 'Publish to new function'
 # Run Schema Check
   - script: apollo service:check --endpoint="https://$(buildFunctionAppName).azurewebsites.net/api/graphql" --tag=staging --key=$(engineKey)
-    displayName: 'Apollo Schame Validation Check'
+    displayName: 'Apollo Schema Validation Check'
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact'
     inputs:

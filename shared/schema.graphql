@@ -19,7 +19,13 @@ type Site {
     """
     id: ID!
     siteCode: String @deprecated(reason: "Use 'id' instead")
+    """
+    Latitude GPS coordinates for the site/sensor
+    """
     latitude: Float
+    """
+    Longitude GPS coordinates for the site/sensor
+    """
     longitude: Float
     """
     Measurement readings from sensors

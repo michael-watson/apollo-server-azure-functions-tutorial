@@ -14,5 +14,10 @@
           }
       }
   },
+  "extensions": {
+    "http": {
+      "routePrefix": ""
+    }
+  },
   "watchDirectories": [ "resolvers", "datasources", "shared", "utils", "graphql" ]
 }

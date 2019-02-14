@@ -65,3 +65,4 @@ steps:
   - script: az group delete -n $(buildResourceGroup) --yes
     condition: always()
     displayName: 'Delete  Azure resource group'
+    
